@@ -1,4 +1,9 @@
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
+
+engine = create_engine('sqlite:///ecommerce.db', echo=True)
+SessionLocal = sessionmaker(bind=engine)
 
 
-engine = create_engine('sqlite:///ecommerce.db')
+class Base(DeclarativeBase):
+    pass
