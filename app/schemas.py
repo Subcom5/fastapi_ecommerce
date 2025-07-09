@@ -2,6 +2,9 @@ from pydantic import BaseModel, Field
 
 
 class CreateProduct(BaseModel):
+    """
+    Схема для создания нового продукта.
+    """
     name: str = Field(..., description='Название продукта', examples=['Электродрель'])
     description: str = Field(..., description='Описание продукта', examples=['Сверхмощная дрель'])
     price: int  = Field(..., description='Цена продукта', examples=[1000])
@@ -11,5 +14,8 @@ class CreateProduct(BaseModel):
 
 
 class CreateCategory(BaseModel):
+    """
+    Схема для создания новой категории продуктов.
+    """
     name: str = Field(..., description='Название категории', examples=['Инструменты'])
     parent_id: int | None = Field(default=None ,description='ID родительской категории', examples=[33])
