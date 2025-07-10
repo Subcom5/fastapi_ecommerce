@@ -1,20 +1,19 @@
-from app.backend.db import SessionLocal
+from typing import AsyncGenerator
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.backend.db import async_session_maker
 
 
-async def get_db():
+async def get_db() -> AsyncGenerator[AsyncSession]:
     """
-    Генератор зависимости для получения SQLAlchemy-сессии.
+        Асинхронный генератор, предоставляющий сессию подключения к базе данных.
 
-    Используется в `Depends(get_db)` внутри маршрутов, чтобы предоставить доступ  к
-    базе данных и автоматически закрыть соединение после обработки запроса.
+        Используется как зависимость (`Depends(get_db)`) во всех маршрутах FastAPI, где требуется работа с БД.
 
-    :return: Session: объект SQLAlchemy-сессии, привязанный к текущему подключению.
-    """
-    # Создаем экземпляр сессии (локальное подключение к БД)
-    db = SessionLocal()
-    try:
-        # Передаем сессию вызывающему коду(route)
-        yield db
-    finally:
-        # После завершения запроса или в случае исключения - закрываем сессию
-        db.close()
+        Возвращает:
+            AsyncGenerator[AsyncSession, None]: Асинхронная сессия SQLAlchemy.
+        """
+    # Контекстный менеджер создаёт асинхронную сессию и автоматически её закрывает после использования
+    async with async_session_maker as session:
+        # Возвращает сессию наружу — вызывающий код может выполнять запросы к БД
+        yield session
