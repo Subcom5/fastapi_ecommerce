@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.backend.db import async_session_maker
 
 
-async def get_db() -> AsyncGenerator[AsyncSession]:
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
     """
         Асинхронный генератор, предоставляющий сессию подключения к базе данных.
 
@@ -14,6 +14,6 @@ async def get_db() -> AsyncGenerator[AsyncSession]:
             AsyncGenerator[AsyncSession, None]: Асинхронная сессия SQLAlchemy.
         """
     # Контекстный менеджер создаёт асинхронную сессию и автоматически её закрывает после использования
-    async with async_session_maker as session:
+    async with async_session_maker() as session:
         # Возвращает сессию наружу — вызывающий код может выполнять запросы к БД
         yield session

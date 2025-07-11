@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 
 
 class CreateProduct(BaseModel):
@@ -19,3 +19,14 @@ class CreateCategory(BaseModel):
     """
     name: str = Field(..., description='Название категории', examples=['Инструменты'])
     parent_id: int | None = Field(default=None ,description='ID родительской категории', examples=[33])
+
+
+class CreateUser(BaseModel):
+    """
+    Схема создания нового пользователя.
+    """
+    first_name: str = Field(..., description='Имя пользователя', examples=['Ivan'])
+    last_name: str = Field(..., description='Фамилия пользователя', examples=['Ivanov'])
+    username: str = Field(..., description='Логин пользователя', examples=['MisterX'])
+    email: EmailStr = Field(..., description='Email', examples=['mail@example.com'])
+    password: str = Field(..., description='Пароль', examples=['12345'])
