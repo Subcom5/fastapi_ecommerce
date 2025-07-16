@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select, update, func
 
 from app.backend.db_depends import get_db
 from app.models.products import Product
@@ -81,7 +81,7 @@ async def add_review(
             grade=create_review.grade
         )
     )
-    avg_rating = await db.scalar(select(Reviews.grade).where(
+    avg_rating = await db.scalar(select(func.avg(Reviews.grade)).where(
         Reviews.product_id == create_review.product_id,
             Reviews.is_active.is_(True)
         )
@@ -90,7 +90,7 @@ async def add_review(
     await db.execute(
         update(Product)
         .where(Product.id == create_review.product_id)
-        .values(rating=avg_rating)
+        .values(rating=round(avg_rating, 2) if avg_rating else None)
     )
 
     await db.commit()
