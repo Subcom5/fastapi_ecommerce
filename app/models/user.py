@@ -18,3 +18,4 @@ class User(Base):
     is_supplier: Mapped[bool] = mapped_column(Boolean, nullable=True, default=False)
     is_customer: Mapped[bool] = mapped_column(Boolean, nullable=True, default=True)
 
+    reviews: Mapped[list['Reviews']] = relationship(back_populates='user')

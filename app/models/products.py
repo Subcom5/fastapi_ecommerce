@@ -23,3 +23,4 @@ class Product(Base):
         uselist=False,
         back_populates='products'
     )
+    reviews: Mapped[list['Reviews']] = relationship(back_populates='product')

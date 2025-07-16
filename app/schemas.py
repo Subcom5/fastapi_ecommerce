@@ -30,3 +30,11 @@ class CreateUser(BaseModel):
     username: str = Field(..., description='Логин пользователя', examples=['MisterX'])
     email: EmailStr = Field(..., description='Email', examples=['mail@example.com'])
     password: str = Field(..., description='Пароль', examples=['12345'])
+
+class CreateReview(BaseModel):
+    """
+    Схема создания нового отзыва.
+    """
+    product_id: int = Field(..., description='ID продукта для отзыва', examples=[1])
+    comment: str | None = Field(description='Текст отзыва', examples=['Соответствует описанию'])
+    grade: int = Field(..., ge=1, le=5, description='Оценка отзыва (от 1 до 5 включительно)')
